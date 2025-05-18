@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_home_mobile_app/product/themes/app_colors.dart';
 
 class CustomLoadingIndicator extends StatelessWidget {
-  const CustomLoadingIndicator({Key? key}) : super(key: key);
+  const CustomLoadingIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:smart_home_mobile_app/product/constants/global_constants.dart';
+import 'package:smart_home_mobile_app/product/initializer/di.dart';
 import 'package:smart_home_mobile_app/product/models/telemetry_data/telemetry_data_response.dart';
+import 'package:smart_home_mobile_app/product/service/abstract/telemetry_data_service.dart';
 import 'package:smart_home_mobile_app/product/service/abstract/web_socket_service.dart';
-import 'package:smart_home_mobile_app/product/service/concrete/web_socket_service_impl.dart';
 
-class TelemetryDataServiceImpl {
-  final WebSocketService webSocketService = WebSocketServiceImpl();
+class TelemetryDataServiceImpl implements TelemetryDataService{
+  final WebSocketService webSocketService = kGetIt.get<WebSocketService>();
   StreamSubscription? _webSocketDataSubscription;
   StreamSubscription? _connectionStatusSubscription;
 

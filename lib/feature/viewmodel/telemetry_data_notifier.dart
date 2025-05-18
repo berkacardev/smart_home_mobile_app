@@ -4,8 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_home_mobile_app/product/enums/data_type.dart';
 import 'package:smart_home_mobile_app/product/enums/model_enums/basic_model_status.dart';
+import 'package:smart_home_mobile_app/product/initializer/di.dart';
 import 'package:smart_home_mobile_app/product/models/telemetry_data/telemetry_data_request.dart';
 import 'package:smart_home_mobile_app/product/models/telemetry_data/telemetry_data_response.dart';
+import 'package:smart_home_mobile_app/product/service/abstract/telemetry_data_service.dart';
 import 'package:smart_home_mobile_app/product/service/concrete/telemetry_data_service_impl.dart';
 
 final kTelemetryDataProvider = StateNotifierProvider<TelemetryDataNotifier, TelemetryDataState>((ref) => TelemetryDataNotifier());
@@ -23,10 +25,10 @@ class TelemetryDataNotifier extends StateNotifier<TelemetryDataState> {
           isInConnecting: false,
         ));
 
-  TelemetryDataServiceImpl serviceImpl = TelemetryDataServiceImpl();
+  TelemetryDataService telemetryDataService = kGetIt.get<TelemetryDataService>();
 
   Future<void> listenConnectionState() async {
-    serviceImpl.startTelemetryService(
+    telemetryDataService.startTelemetryService(
       onConnected: () {
         if (!state.deviceConnectionStatus) {
           state = state.copyWith(deviceConnectionStatus: true);
@@ -41,7 +43,7 @@ class TelemetryDataNotifier extends StateNotifier<TelemetryDataState> {
   }
 
   Future<void> listenTelemetryState() async {
-    await serviceImpl.listenTelemetryData(incomingData: (incomingData) {
+    await telemetryDataService.listenTelemetryData(incomingData: (incomingData) {
       TelemetryDataResponse response = incomingData;
       state = state.copyWith(
           smartLightingStatus: response.lightingIsActive,
@@ -57,7 +59,7 @@ class TelemetryDataNotifier extends StateNotifier<TelemetryDataState> {
     bool smartLockState = smartLockStatus ?? state.smartLockStatus;
     TelemetryDataRequest request =
         TelemetryDataRequest(type: DataType.control, deviceIsActive: devicePowerState, lightingIsActive: smartLightingState, lockIsActive: smartLockState);
-    await serviceImpl.sendMessage(jsonEncode(request.toJson()));
+    await telemetryDataService.sendMessage(jsonEncode(request.toJson()));
   }
 }
 

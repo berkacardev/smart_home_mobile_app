@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_home_mobile_app/feature/view/home/home_view.dart';
+import 'package:smart_home_mobile_app/product/initializer/starter.dart';
 
-void main() {
+Future<void> main() async {
+  await StarterInitializer.initialize();
   runApp(ProviderScope(child: const MyApp()));
 }
 
