@@ -20,6 +20,7 @@ class TelemetryDataNotifier extends StateNotifier<TelemetryDataState> {
           smartLockStatus: false,
           temperatureValue: 0,
           temperatureSensorErrorStatus: false,
+          isInConnecting: false,
         ));
 
   TelemetryDataServiceImpl serviceImpl = TelemetryDataServiceImpl();
@@ -69,6 +70,7 @@ class TelemetryDataState extends Equatable {
   final bool smartLockStatus;
   final double temperatureValue;
   final bool temperatureSensorErrorStatus;
+  final bool isInConnecting;
 
   const TelemetryDataState(
       {required this.basicModelStatus,
@@ -78,7 +80,8 @@ class TelemetryDataState extends Equatable {
       required this.smartLightingStatus,
       required this.smartLockStatus,
       required this.temperatureValue,
-      required this.temperatureSensorErrorStatus});
+      required this.temperatureSensorErrorStatus,
+      required this.isInConnecting});
 
   @override
   List<Object?> get props => [
@@ -101,6 +104,7 @@ class TelemetryDataState extends Equatable {
     bool? smartLockStatus,
     double? temperatureValue,
     bool? temperatureSensorErrorStatus,
+    bool? isInConnecting,
   }) {
     return TelemetryDataState(
       basicModelStatus: basicModelStatus ?? this.basicModelStatus,
@@ -111,6 +115,7 @@ class TelemetryDataState extends Equatable {
       smartLockStatus: smartLockStatus ?? this.smartLockStatus,
       temperatureValue: temperatureValue ?? this.temperatureValue,
       temperatureSensorErrorStatus: temperatureSensorErrorStatus ?? this.temperatureSensorErrorStatus,
+      isInConnecting: isInConnecting ?? this.isInConnecting,
     );
   }
 }

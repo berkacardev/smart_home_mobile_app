@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smart_home_mobile_app/feature/viewmodel/telemetry_data_notifier.dart';
 import 'package:smart_home_mobile_app/product/constants/icons/icon_constants.dart';
 import 'package:smart_home_mobile_app/product/constants/lang/local_keys_tr.dart';
 import 'package:smart_home_mobile_app/product/themes/app_colors.dart';
+import 'package:smart_home_mobile_app/product/widgets/cards/custom_no_connection_icon_card.dart';
 
-class CustomCctvCard extends StatelessWidget {
+class CustomCctvCard extends ConsumerStatefulWidget {
   const CustomCctvCard({super.key});
 
+  @override
+  ConsumerState createState() => _CustomCctvCardState();
+}
+
+class _CustomCctvCardState extends ConsumerState<CustomCctvCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,7 +23,12 @@ class CustomCctvCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          SizedBox(height: 100, child: Image.asset(IconConstants.getIconAsPNG(IconConstants.cctvIconPath))),
+          Stack(
+            children: [
+              Align(child: SizedBox(height: 100, width: 160, child: Image.asset(IconConstants.getIconAsPNG(IconConstants.cctvIconPath)))),
+              ref.watch(kTelemetryDataProvider).deviceConnectionStatus ? SizedBox() : CustomNoConnectionIconCard()
+            ],
+          ),
           Text(LocalKeysTr.CCTV_CAMERA.toUpperCase(), style: TextStyle(color: AppColors.WHITE, fontSize: 16, fontWeight: FontWeight.w500))
         ],
       ),

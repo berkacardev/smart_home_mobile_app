@@ -4,6 +4,7 @@ import 'package:smart_home_mobile_app/feature/viewmodel/telemetry_data_notifier.
 import 'package:smart_home_mobile_app/product/constants/icons/icon_constants.dart';
 import 'package:smart_home_mobile_app/product/constants/units.dart';
 import 'package:smart_home_mobile_app/product/themes/app_colors.dart';
+import 'package:smart_home_mobile_app/product/widgets/cards/custom_no_connection_icon_card.dart';
 
 class CustomTemperatureCard extends ConsumerStatefulWidget {
   const CustomTemperatureCard({super.key});
@@ -22,7 +23,12 @@ class _CustomTemperatureCardState extends ConsumerState<CustomTemperatureCard> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          SizedBox(height: 100, child: Image.asset(IconConstants.getIconAsPNG(IconConstants.temperatureIconPath))),
+          Stack(
+            children: [
+              SizedBox(height: 100, width: 160, child: Image.asset(IconConstants.getIconAsPNG(IconConstants.temperatureIconPath))),
+              ref.watch(kTelemetryDataProvider).deviceConnectionStatus ? SizedBox() : CustomNoConnectionIconCard()
+            ],
+          ),
           ref.watch(kTelemetryDataProvider).devicePowerStatus ? Text("${ref.watch(kTelemetryDataProvider).temperatureValue}${Units.CELSIUS_DEGREE}", style: TextStyle(color: AppColors.WHITE, fontSize: 16, fontWeight: FontWeight.w500)) : Text("-${Units.CELSIUS_DEGREE}", style: TextStyle(color: AppColors.WHITE, fontSize: 16, fontWeight: FontWeight.w500))
         ],
       ),

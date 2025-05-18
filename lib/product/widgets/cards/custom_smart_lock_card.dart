@@ -4,6 +4,7 @@ import 'package:smart_home_mobile_app/feature/viewmodel/telemetry_data_notifier.
 import 'package:smart_home_mobile_app/product/constants/icons/icon_constants.dart';
 import 'package:smart_home_mobile_app/product/constants/lang/local_keys_tr.dart';
 import 'package:smart_home_mobile_app/product/themes/app_colors.dart';
+import 'package:smart_home_mobile_app/product/widgets/cards/custom_no_connection_icon_card.dart';
 
 class CustomSmartLockCard extends ConsumerStatefulWidget {
   const CustomSmartLockCard({super.key});
@@ -37,11 +38,17 @@ class _CustomSmartLockCardState extends ConsumerState<CustomSmartLockCard> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            SizedBox(
-                height: 100,
-                child: ref.watch(kTelemetryDataProvider).smartLockStatus
-                    ? Image.asset(IconConstants.getIconAsPNG(IconConstants.unlockedIconPath))
-                    : Image.asset(IconConstants.getIconAsPNG(IconConstants.lockedIconPath))),
+            Stack(
+              children: [
+                SizedBox(
+                    height: 100,
+                    width: 160,
+                    child: ref.watch(kTelemetryDataProvider).smartLockStatus
+                        ? Image.asset(IconConstants.getIconAsPNG(IconConstants.unlockedIconPath))
+                        : Image.asset(IconConstants.getIconAsPNG(IconConstants.lockedIconPath))),
+                ref.watch(kTelemetryDataProvider).deviceConnectionStatus ? SizedBox() : CustomNoConnectionIconCard()
+              ],
+            ),
             Text(
                 ref.watch(kTelemetryDataProvider).smartLockStatus
                     ? LocalKeysTr.THE_DOOR_IS_UNLOCKED.toUpperCase()

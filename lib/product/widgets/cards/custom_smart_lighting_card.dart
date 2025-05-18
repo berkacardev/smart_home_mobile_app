@@ -4,6 +4,7 @@ import 'package:smart_home_mobile_app/feature/viewmodel/telemetry_data_notifier.
 import 'package:smart_home_mobile_app/product/constants/icons/icon_constants.dart';
 import 'package:smart_home_mobile_app/product/constants/lang/local_keys_tr.dart';
 import 'package:smart_home_mobile_app/product/themes/app_colors.dart';
+import 'package:smart_home_mobile_app/product/widgets/cards/custom_no_connection_icon_card.dart';
 
 class CustomSmartLightingCard extends ConsumerStatefulWidget {
   const CustomSmartLightingCard({super.key});
@@ -42,7 +43,12 @@ class _CustomSmartLightingCardState extends ConsumerState<CustomSmartLightingCar
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            SizedBox(height: 100, child: ref.watch(kTelemetryDataProvider).smartLightingStatus ? Image.asset(IconConstants.getIconAsPNG(IconConstants.bulbOpenPath)): Image.asset(IconConstants.getIconAsPNG(IconConstants.bulbClosePath))),
+            Stack(
+              children: [
+                SizedBox(height: 100,width: 160, child: ref.watch(kTelemetryDataProvider).smartLightingStatus ? Image.asset(IconConstants.getIconAsPNG(IconConstants.bulbOpenPath)): Image.asset(IconConstants.getIconAsPNG(IconConstants.bulbClosePath))),
+                ref.watch(kTelemetryDataProvider).deviceConnectionStatus ? SizedBox() : CustomNoConnectionIconCard()
+              ],
+            ),
             Text(ref.watch(kTelemetryDataProvider).smartLightingStatus ? LocalKeysTr.LIGHTING_ON.toUpperCase() : LocalKeysTr.LIGHTING_OFF.toUpperCase(), style: TextStyle(color: AppColors.WHITE, fontSize: 16, fontWeight: FontWeight.w500))
           ],
         ),
