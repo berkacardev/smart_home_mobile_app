@@ -1,0 +1,4 @@
+enum InfoCardStatus{
+  SENSOR_ERROR,
+  CONNECTION_ERROR
+}
